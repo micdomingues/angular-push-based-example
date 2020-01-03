@@ -1,0 +1,22 @@
+<h1> Pull Base Example </h1>
+
+<pre>{{{sales: sales, totalSales: totalSales, loading: loading} | json }}</pre>
+
+<app-filter (filterChanged)="onChanges($event)"></app-filter>
+
+<ng-container *ngIf="!loading">
+
+  <h2> Resumo </h2>
+  <div> <p>Vendas no Todal: {{totalSales}} </p></div>
+
+  <h2> Detalhe </h2>
+  <app-grid [sales]="sales"></app-grid>
+
+
+  <div>
+    <button (click)="changeRouter()"> Mudar de Contexto </button>
+  </div>
+
+</ng-container>
+
+<div *ngIf="loading"> <h1>Carregando dados </h1></div>

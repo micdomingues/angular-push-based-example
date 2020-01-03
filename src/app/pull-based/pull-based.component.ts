@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { User } from './user.interfaces';
+
 import { PullBasedService } from './pull-based.service';
+import { User } from './user.interfaces';
 
 
 @Component({

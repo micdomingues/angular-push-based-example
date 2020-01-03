@@ -1,0 +1,24 @@
+<div *ngIf="(vm$ | async) as vm">
+  <h1> Push Base Example </h1>
+  <pre>{{vm | json }}</pre>
+
+  <app-filter-pushed></app-filter-pushed>
+
+  <ng-container *ngIf="!vm.loading">
+
+    <h2> Resumo </h2>
+    <div> <p>Vendas no Todal: {{vm.totalSales}} </p></div>
+
+    <h2> Detalhe </h2>
+    <app-grid-push-based [sales]="vm.sales"></app-grid-push-based>
+
+    <div>
+      <button (click)="changeRouter()"> Mudar de Contexto </button>
+    </div>
+
+  </ng-container>
+
+  <div *ngIf="vm.loading"> <h1>Carregando dados </h1></div>
+
+</div>
+

@@ -15,3 +15,10 @@ export interface Pagination {
 export interface RandomUserResponse {
   results: User[];
 }
+
+export interface UserState {
+  users: User[];
+  pagination: Pagination;
+  criteria: string;
+  loading: boolean;
+}

@@ -1,0 +1,14 @@
+<div>
+  <label id="nsu-label"> Filtro 1 </label>
+  <input type="text"
+    [(ngModel)]="byNsu"
+    (ngModelChange)="onFilterChanged()"
+    aria-labelledby="nsu-lsabel">
+</div>
+<div>
+  <label id="tid-label"> Filtro 2 </label>
+  <input type="text"
+    [(ngModel)]="byTid"
+    (ngModelChange)="onFilterChanged()"
+    aria-labelledby="tid-lsabel">
+</div>

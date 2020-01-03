@@ -1,52 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { User } from './user.interfaces';
-import { PullBasedService } from './push-based.facade';
+import { Observable } from 'rxjs';
+
+import { PushBaseFacade } from './push-based.service';
+import { UserState } from './user.interfaces';
 
 
 @Component({
   selector: 'app-push-based',
   templateUrl: './push-based.component.html',
   styleUrls: ['./push-based.component.css'],
-  // changeDetection: ChangeDetectionStrategy.OnPush //Normamente não utilizado
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PullBasedComponent implements OnInit {
+export class PushBasedComponent implements OnInit {
+  searchTerm: FormControl;
   showButton = true;
-  pagination = this.users.pagination;
-  searchTerm = new FormControl();
-  users$: Observable<User[]>;
+  vm$: Observable<UserState> = this.facade.vm$;
 
-  constructor(public users: PullBasedService) { }
+  constructor(public facade: PushBaseFacade) { }
 
   ngOnInit() {
-    this.searchTerm.patchValue(this.users.criteria, { emitEvent: false });
+    const { criteria } = this.facade.getStateSnapshot();
 
-    const userChanges$ = this.searchTerm.valueChanges.pipe(
-      tap(_ => this.users$ = null),
-      debounceTime(300),
-      distinctUntilChanged(),
-    );
-
-    userChanges$
-      .subscribe(value => {
-        this.users.updateSearchCriteria(value);
-        this.loadUsers();
-      });
-  }
-
-  loadUsers() {
-    this.users$ = this.users.findAllUsers();
-  }
-
-  updatePagination(pageSize: number) {
-    this.users.updatePagination(pageSize);
-    this.pagination = this.users.pagination;
+    this.searchTerm = this.facade.buildSearchTermControl();
+    this.searchTerm.patchValue(criteria, { emitEvent: false });
   }
 
   getPageSize() {
-    this.pagination = this.users.pagination;
     this.showButton = false;
   }
 }

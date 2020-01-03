@@ -1,0 +1,48 @@
+<div *ngIf="pagination">
+  <img src='https://i.imgur.com/sTPxlwv.png'>
+
+  <div>
+    Search for:
+    <input type="text" [formControl]="searchTerm" class="options">
+
+    <div class="limits">
+      Search PageSize:
+      <button class="options" *ngFor="let pageSize of pagination.pageSizes"
+        [ngClass]="{active: pageSize === pagination.selectedSize}" (click)="updatePagination(pageSize)">
+        {{pageSize}}
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  <ng-container *ngIf="(users$ |async) as users; else pleaseLoadUsers">
+    <ul>
+      <li *ngFor="let u of users">
+        {{u.name.first}} {{u.name.last}}
+      </li>
+    </ul>
+  </ng-container>
+  <ng-template #pleaseLoadUsers>
+    <span class="warning">This is where you 'pull' data from the service.</span>
+    <br />
+    <span class="warning">Click the 'Load Users' button ▼ below!</span>
+  </ng-template>
+
+  <hr>
+  <div>
+    <button class="options" style="margin-right: 20px;" (click)="loadUsers()">
+      Load Users
+    </button>
+
+    <button *ngIf="showButton" class="options" (click)="getPageSize()">
+      Show PageSize
+    </button>
+
+    <div *ngIf="!showButton" class="pagination">
+      Current PageSize = {{ pagination.selectedSize }}
+    </div>
+
+
+  </div>
+</div>
